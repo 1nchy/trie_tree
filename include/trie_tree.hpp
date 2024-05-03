@@ -15,8 +15,8 @@ class trie_tree {
 public:
     trie_tree() : _root(0) {}
     trie_tree(std::initializer_list<const char* const>);
-    trie_tree(const trie_tree&) = delete;
-    trie_tree& operator=(const trie_tree&) = delete;
+    trie_tree(const trie_tree&);
+    trie_tree& operator=(const trie_tree&);
     ~trie_tree() = default;
     /**
      * @brief 添加字符串，若字符串已存在，则计数加一
@@ -77,6 +77,8 @@ private:
     auto locate(const std::string& _s) const -> const node_type*;
     // return the path of %_s when tree contains %_s
     auto trace(const std::string& _s) -> std::vector<node_type*>;
+    void _M_assign(const trie_tree& _t);
+    void _M_clone_sub_tree(node_type* const _p, const node_type* const _t);
 private:
     node_type _root;
     size_t _word_cnt = 0;

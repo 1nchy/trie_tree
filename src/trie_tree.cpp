@@ -48,6 +48,19 @@ auto trie_tree::trace(const std::string& _s)
     }
     return _path;
 }
+auto trie_tree::_M_assign(const trie_tree& _t)
+-> void {
+    _M_clone_sub_tree(&_root, &_t._root);
+}
+auto trie_tree::_M_clone_sub_tree(node_type* const _p, const node_type* const _t)
+-> void {
+    assert(_p->_c == _t->_c);
+    _p->_word_frequency = _t->_word_frequency;
+    for (const auto [_c, _cp] : _t->_children) {
+        _p->add(_c);
+        _M_clone_sub_tree(_p->_children[_c], _t->_children.at(_c));
+    }
+}
 
 
 trie_tree::trie_tree(std::initializer_list<const char* const> _il)
@@ -56,6 +69,20 @@ trie_tree::trie_tree(std::initializer_list<const char* const> _il)
         add(std::string(_s));
     }
 }
+trie_tree::trie_tree(const trie_tree& _t)
+: _root(0) {
+    _M_assign(_t);
+    _max_depth = _t._max_depth;
+    _word_cnt = _t._word_cnt;
+}
+trie_tree& trie_tree::operator=(const trie_tree& _t) {
+    if (&_t == this) return *this;
+    _M_assign(_t);
+    _max_depth = _t._max_depth;
+    _word_cnt = _t._word_cnt;
+    return *this;
+}
+
 
 auto trie_tree::add(const std::string& _s)
 -> void {
