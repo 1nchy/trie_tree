@@ -72,17 +72,19 @@ auto trie_tree::add(const std::string& _s)
             _p = _p->_children.at(_c);
         }
     }
-    _p->_end_of_word = true;
+    ++_p->_word_frequency;
     ++_word_cnt;
     _max_depth = std::max(_max_depth, _depth);
 }
-auto trie_tree::del(const std::string& _s)
+auto trie_tree::minus(const std::string& _s)
 -> bool {
     if (_s.empty()) return false;
     std::vector<node_type*> _path = trace(_s);
     if (_path.empty()) return false;
     node_type* _p = _path.back();
-    assert(_p->_end_of_word); _p->_end_of_word = false;
+    assert(_p->_word_frequency != 0);
+    --_p->_word_frequency;
+    if (_p->_word_frequency != 0) return true;
     char _to_del_key = 0;
     for (auto _i = _path.rbegin(); _i != _path.rend(); ++_i) {
         _p = *_i;
@@ -91,6 +93,27 @@ auto trie_tree::del(const std::string& _s)
         _to_del_key = _p->_c;
     }
     return true;
+}
+auto trie_tree::del(const std::string& _s)
+-> bool {
+    if (_s.empty()) return false;
+    std::vector<node_type*> _path = trace(_s);
+    if (_path.empty()) return false;
+    node_type* _p = _path.back();
+    assert(_p->_word_frequency != 0); _p->_word_frequency = 0;
+    char _to_del_key = 0;
+    for (auto _i = _path.rbegin(); _i != _path.rend(); ++_i) {
+        _p = *_i;
+        _p->del(_to_del_key);
+        if (_p->_children.size() >= 1) break;
+        _to_del_key = _p->_c;
+    }
+    return true;
+}
+auto trie_tree::count(const std::string& _s) const
+-> size_t {
+    const node_type* _p = locate(_s);
+    return _p->_word_frequency;
 }
 auto trie_tree::clear()
 -> void {
@@ -113,7 +136,7 @@ auto trie_tree::tab(const std::string& _s) const
     std::string _path; _path.reserve(_max_depth);
     std::function<void(const node_type* _p)> dfs
     = [&](const node_type* _p) {
-        if (_p->_end_of_word) {
+        if (_p->_word_frequency != 0) {
             // if (!_path.empty())
             _completion.emplace_back(_path);
         }
@@ -141,7 +164,7 @@ auto trie_tree::next(const std::string& _s) const
     }
     if (!_s.empty() && _p == &_root) return {};
     std::string _completion;
-    while (_p->_children.size() == 1 && !_p->_end_of_word) {
+    while (_p->_children.size() == 1 && _p->_word_frequency == 0) {
         _p = _p->_children.cbegin()->second;
         _completion.push_back(_p->_c);
     }
@@ -155,7 +178,9 @@ auto trie_tree::longest_match(std::string::const_iterator _begin, std::string::c
     while (_i != _end) {
         if (_p->contains(*_i)) {
             _p = _p->_children.at(*_i); ++_i;
-            if (_p->_end_of_word) _max_match = _i - _begin;
+            if (_p->_word_frequency != 0) {
+                _max_match = _i - _begin;
+            }
         }
         else {
             break;

@@ -18,29 +18,56 @@ public:
     trie_tree(const trie_tree&) = delete;
     trie_tree& operator=(const trie_tree&) = delete;
     ~trie_tree() = default;
-    void add(const std::string& _s);
-    bool del(const std::string& _s);
-    void clear();
     /**
-     * @brief whether the tree contains %_s, return false if %_s.empty()
+     * @brief 添加字符串，若字符串已存在，则计数加一
     */
-    bool query(const std::string& _s) const;
+    auto add(const std::string& _s) -> void;
     /**
-     * @brief list all completions prefixed with %_s, return all words if %_s.empty()
+     * @brief 字符串计数减一
+     * @return true，若该字符串不存在则返回 false
     */
-    std::vector<std::string> tab(const std::string& _s) const;
+    auto minus(const std::string& _s) -> bool;
     /**
-     * @brief common prefix of all completions prefixed with %_s, all words prefixed with ""
+     * @brief 删除字符串
+     * @return true，若该字符串不存在则返回 false
     */
-    std::string next(const std::string& _s) const;
+    auto del(const std::string& _s) -> bool;
     /**
-     * @brief longest string match
+     * @return 字符串计数
     */
-    size_t longest_match(std::string::const_iterator _begin, std::string::const_iterator _end) const;
+    auto count(const std::string& _s) const -> size_t;
+    /**
+     * @brief 删除所有字符串
+    */
+    auto clear() -> void;
+    /**
+     * @return 字典树是否包含为 %_s 的路径（不一定包含 %_s）
+    */
+    auto query(const std::string& _s) const -> bool; // todo
+    /**
+     * @brief 查找所有以 %_s 为前缀的单词（空字符串是所有单词的前缀）
+     * @return 所有单词的补全
+    */
+    auto tab(const std::string& _s) const -> std::vector<std::string>;
+    /**
+     * @brief 查找所有以 %_s 为前缀的单词（空字符串是所有单词的前缀）
+     * @return 所有单词补全的公共前缀
+    */
+    auto next(const std::string& _s) const -> std::string;
+    /**
+     * @brief 寻找字符串在字典树中的最长匹配
+     * @param _begin 字符串起始迭代器
+     * @param _end 字符串终止迭代器
+     * @return 返回匹配部分的长度
+    */
+    auto longest_match(std::string::const_iterator _begin, std::string::const_iterator _end) const -> size_t;
 private:
-    node_type* locate(const std::string& _s);
-    const node_type* locate(const std::string& _s) const;
-    std::vector<node_type*> trace(const std::string& _s);
+    // locate the node, to which the path from the %_root is the %_s
+    auto locate(const std::string& _s) -> node_type*;
+    // locate the node, to which the path from the %_root is the %_s
+    auto locate(const std::string& _s) const -> const node_type*;
+    // return the path of %_s when tree contains %_s
+    auto trace(const std::string& _s) -> std::vector<node_type*>;
 private:
     node_type _root;
     size_t _word_cnt = 0;

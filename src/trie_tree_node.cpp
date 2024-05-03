@@ -3,8 +3,8 @@
 namespace asp {
 namespace __details__ {
 
-trie_tree_node::trie_tree_node(char _c, bool _eow)
- : _c(_c), _end_of_word(_eow) {}
+trie_tree_node::trie_tree_node(char _c, bool _end_of_word)
+ : _c(_c), _word_frequency(_end_of_word ? 1 : 0) {}
 trie_tree_node::~trie_tree_node() {
     for (auto& _i : _children) {
         delete _i.second;
