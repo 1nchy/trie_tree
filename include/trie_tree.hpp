@@ -56,6 +56,11 @@ public:
     auto next(const std::string& _s) const -> std::string;
     /**
      * @brief 寻找字符串在字典树中的最长匹配
+     * @return 返回匹配部分的长度
+    */
+    auto longest_match(const std::string& _s) const -> size_t;
+    /**
+     * @brief 寻找字符串在字典树中的最长匹配
      * @param _begin 字符串起始迭代器
      * @param _end 字符串终止迭代器
      * @return 返回匹配部分的长度

@@ -170,6 +170,23 @@ auto trie_tree::next(const std::string& _s) const
     }
     return _completion;
 }
+auto trie_tree::longest_match(const std::string& _s) const
+-> size_t {
+    const node_type* _p = &_root;
+    size_t _max_match = 0;
+    for (size_t _i = 0; _i != _s.size();) {
+        if (_p->contains(_s[_i])) {
+            _p = _p->_children.at(_s[_i]); ++_i;
+            if (_p->_word_frequency != 0) {
+                _max_match = _i;
+            }
+        }
+        else {
+            break;
+        }
+    }
+    return _max_match;
+}
 auto trie_tree::longest_match(std::string::const_iterator _begin, std::string::const_iterator _end) const
 -> size_t {
     std::string::const_iterator _i = _begin;
