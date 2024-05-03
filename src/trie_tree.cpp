@@ -72,8 +72,10 @@ auto trie_tree::add(const std::string& _s)
             _p = _p->_children.at(_c);
         }
     }
+    if (_p->_word_frequency == 0) {
+        ++_word_cnt;
+    }
     ++_p->_word_frequency;
-    ++_word_cnt;
     _max_depth = std::max(_max_depth, _depth);
 }
 auto trie_tree::minus(const std::string& _s)
@@ -92,6 +94,7 @@ auto trie_tree::minus(const std::string& _s)
         if (_p->_children.size() >= 1) break;
         _to_del_key = _p->_c;
     }
+    --_word_cnt;
     return true;
 }
 auto trie_tree::del(const std::string& _s)
@@ -108,6 +111,7 @@ auto trie_tree::del(const std::string& _s)
         if (_p->_children.size() >= 1) break;
         _to_del_key = _p->_c;
     }
+    --_word_cnt;
     return true;
 }
 auto trie_tree::count(const std::string& _s) const
@@ -126,7 +130,11 @@ auto trie_tree::query(const std::string& _s) const
 -> bool {
     if (_s.empty()) return false;
     const node_type* _p = locate(_s);
-    return _p == &_root;
+    return _p != &_root;
+}
+auto trie_tree::contains(const std::string& _s) const
+-> bool {
+    return count(_s) != 0;
 }
 auto trie_tree::tab(const std::string& _s) const
 -> std::vector<std::string> {

@@ -43,7 +43,11 @@ public:
     /**
      * @return 字典树是否包含为 %_s 的路径（不一定包含 %_s）
     */
-    auto query(const std::string& _s) const -> bool; // todo
+    auto query(const std::string& _s) const -> bool;
+    /**
+     * @return 字典树是否包含为 %_s
+    */
+    auto contains(const std::string& _s) const -> bool;
     /**
      * @brief 查找所有以 %_s 为前缀的单词（空字符串是所有单词的前缀）
      * @return 所有单词的补全

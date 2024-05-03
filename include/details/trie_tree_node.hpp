@@ -12,7 +12,6 @@ struct trie_tree_node {
     ~trie_tree_node();
     bool contains(char _c) const;
     void add(char _c);
-    bool minus(char _c);
     bool del(char _c);
     const char _c;
     // bool _end_of_word = false;
