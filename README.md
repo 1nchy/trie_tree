@@ -22,21 +22,21 @@
 
 ~~~cpp
 /**
- * asp::trie_tree _t;
+ * icy::trie_tree _t;
  * _t.add("one");
  * _t.add("two");
  * _t.add("three");
 */
-asp::trie_tree _t {"one", "two", "three"};
+icy::trie_tree _t {"one", "two", "three"};
 ~~~
 
 ### 成员函数
 
 ~~~cpp
-asp::trie_tree _t1 {"sin", "sinh"};
+icy::trie_tree _t1 {"sin", "sinh"};
 std::string _s = "sinh(pi/2)";
 const auto _len = _t1.longest_match(_s.cbegin(), _s.cend()); // _len = 4
-asp::trie_tree _t2 {"HOME", "HOSTTYPE"};
+icy::trie_tree _t2 {"HOME", "HOSTTYPE"};
 std::string _env = "H";
 _env.append(_t2.next(_env)); // _env = "HO"
 const auto _suggestion = _t2.tab(_env); // _suggestion = ["ME", "STTYPE"]

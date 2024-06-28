@@ -1,5 +1,5 @@
-#ifndef _ASP_TRIE_TREE_HPP_
-#define _ASP_TRIE_TREE_HPP_
+#ifndef _ICY_TRIE_TREE_HPP_
+#define _ICY_TRIE_TREE_HPP_
 
 #include <string>
 #include <vector>
@@ -7,7 +7,7 @@
 
 #include "details/trie_tree_node.hpp"
 
-namespace asp {
+namespace icy {
 class trie_tree;
 
 class trie_tree {
@@ -26,7 +26,7 @@ public:
      * @brief 字符串计数减一
      * @return true，若该字符串不存在则返回 false
     */
-    auto minus(const std::string& _s) -> bool;
+    auto subtract(const std::string& _s) -> bool;
     /**
      * @brief 删除字符串
      * @return true，若该字符串不存在则返回 false
@@ -86,4 +86,4 @@ private:
 };
 };
 
-#endif // _ASP_TRIE_TREE_HPP_
+#endif // _ICY_TRIE_TREE_HPP_

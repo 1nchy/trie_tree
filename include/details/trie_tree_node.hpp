@@ -1,9 +1,9 @@
-#ifndef _ASP_DETAILS_TRIE_TREE_HPP_
-#define _ASP_DETAILS_TRIE_TREE_HPP_
+#ifndef _ICY_DETAILS_TRIE_TREE_HPP_
+#define _ICY_DETAILS_TRIE_TREE_HPP_
 
 #include <unordered_map>
 
-namespace asp {
+namespace icy {
 namespace __details__ {
 
 struct trie_tree_node {
@@ -22,4 +22,4 @@ struct trie_tree_node {
 }
 }
 
-#endif // _ASP_DETAILS_TRIE_TREE_HPP_
+#endif // _ICY_DETAILS_TRIE_TREE_HPP_

@@ -1,6 +1,6 @@
 #include "details/trie_tree_node.hpp"
 
-namespace asp {
+namespace icy {
 namespace __details__ {
 
 trie_tree_node::trie_tree_node(char _c, bool _end_of_word)

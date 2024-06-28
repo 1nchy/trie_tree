@@ -4,7 +4,7 @@
 
 #include <functional>
 
-namespace asp {
+namespace icy {
 auto trie_tree::locate(const std::string& _s)
 -> node_type* {
     node_type* _p = &_root;
@@ -105,7 +105,7 @@ auto trie_tree::add(const std::string& _s)
     ++_p->_word_frequency;
     _max_depth = std::max(_max_depth, _depth);
 }
-auto trie_tree::minus(const std::string& _s)
+auto trie_tree::subtract(const std::string& _s)
 -> bool {
     if (_s.empty()) return false;
     std::vector<node_type*> _path = trace(_s);
