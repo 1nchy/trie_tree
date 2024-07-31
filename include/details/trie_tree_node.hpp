@@ -1,6 +1,7 @@
 #ifndef _ICY_DETAILS_TRIE_TREE_HPP_
 #define _ICY_DETAILS_TRIE_TREE_HPP_
 
+#include <cstddef>
 #include <unordered_map>
 
 namespace icy {
