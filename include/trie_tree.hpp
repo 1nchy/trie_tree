@@ -1,82 +1,104 @@
 #ifndef _ICY_TRIE_TREE_HPP_
 #define _ICY_TRIE_TREE_HPP_
 
+#include <cstddef>
 #include <string>
 #include <vector>
 #include <unordered_map>
 
-#include "details/trie_tree_node.hpp"
-
 namespace icy {
+
 class trie_tree;
 
 class trie_tree {
-    typedef __details__::trie_tree_node node_type;
+private:
+    struct node {
+    public:
+        node(char, bool);
+        ~node();
+        auto add(char) -> void;
+        auto del(char) -> bool;
+        auto clear() -> void;
+        auto value() const -> char;
+        auto frequency() const -> size_t;
+        auto increase_frequency() -> void;
+        auto decrease_frequency() -> void;
+        auto set_frequency(size_t) -> void;
+        const auto& children() const { return _children; }
+    private:
+        std::unordered_map<char, node*> _children;
+        const char _c;
+        size_t _frequency = 0;
+    };
+    using node_type = trie_tree::node;
 public:
-    trie_tree() : _root(0) {}
+public:
+    trie_tree() : _root(0, false) {}
     trie_tree(std::initializer_list<const char* const>);
     trie_tree(const trie_tree&);
     trie_tree& operator=(const trie_tree&);
     ~trie_tree() = default;
     /**
-     * @brief 添加字符串，若字符串已存在，则计数加一
+     * @brief insert string, increase count, ignore empty string
+     * @return string count
     */
-    auto add(const std::string& _s) -> void;
+    auto insert(const std::string& _s) -> size_t;
     /**
-     * @brief 字符串计数减一
-     * @return true，若该字符串不存在则返回 false
+     * @brief decrease count, ignore empty string
+     * @return string count
     */
-    auto subtract(const std::string& _s) -> bool;
+    auto reduce(const std::string& _s) -> size_t;
     /**
-     * @brief 删除字符串
-     * @return true，若该字符串不存在则返回 false
+     * @brief erase string
+     * @return whether the string exists
     */
-    auto del(const std::string& _s) -> bool;
+    auto erase(const std::string& _s) -> bool;
     /**
-     * @return 字符串计数
+     * @return string count
     */
     auto count(const std::string& _s) const -> size_t;
     /**
-     * @brief 删除所有字符串
+     * @brief erase all string
     */
     auto clear() -> void;
     /**
-     * @return 字典树是否包含为 %_s 的路径（不一定包含 %_s）
+     * @return whether any string starts with `_s`
     */
-    auto query(const std::string& _s) const -> bool;
+    auto starts_with(const std::string& _s) const -> bool;
     /**
-     * @return 字典树是否包含为 %_s
+     * @return whether trie tree contains `_s`
     */
     auto contains(const std::string& _s) const -> bool;
     /**
-     * @brief 查找所有以 %_s 为前缀的单词（空字符串是所有单词的前缀）
-     * @return 所有单词的补全
+     * @return the completion for all strings, of which start with `_s`
     */
-    auto tab(const std::string& _s) const -> std::vector<std::string>;
+    auto completion(const std::string& _s) const -> std::vector<std::string>;
     /**
-     * @brief 查找所有以 %_s 为前缀的单词（空字符串是所有单词的前缀）
-     * @return 所有单词补全的公共前缀
+     * @return the prefix for all strings, of which start with `_s`
     */
-    auto next(const std::string& _s) const -> std::string;
+    auto prefix(const std::string& _s) const -> std::string;
     /**
-     * @brief 寻找字符串在字典树中的最长匹配
-     * @return 返回匹配部分的长度
+     * @brief longest match of `_s` in trie tree
+     * @return the length of the matching part
     */
-    auto longest_match(const std::string& _s) const -> size_t;
+    auto match(const std::string& _s) const -> size_t;
     /**
-     * @brief 寻找字符串在字典树中的最长匹配
-     * @param _begin 字符串起始迭代器
-     * @param _end 字符串终止迭代器
-     * @return 返回匹配部分的长度
+     * @brief longest match of `[_begin, _end)` in trie tree
+     * @return the length of the matching part
     */
-    auto longest_match(std::string::const_iterator _begin, std::string::const_iterator _end) const -> size_t;
+    auto match(std::string::const_iterator _begin, std::string::const_iterator _end) const -> size_t;
+    /**
+     * @brief longest match of `[_begin, _end)` in trie tree
+     * @return the length of the matching part
+    */
+    auto match(const char* _begin, const char* _end) const -> size_t;
 private:
-    // locate the node, to which the path from the %_root is the %_s
-    auto locate(const std::string& _s) -> node_type*;
-    // locate the node, to which the path from the %_root is the %_s
-    auto locate(const std::string& _s) const -> const node_type*;
+    // _M_locate the node, to which the path from the %_root is the %_s
+    auto _M_locate(const std::string& _s) -> node_type*;
+    // _M_locate the node, to which the path from the %_root is the %_s
+    auto _M_locate(const std::string& _s) const -> const node_type*;
     // return the path of %_s when tree contains %_s
-    auto trace(const std::string& _s) -> std::vector<node_type*>;
+    auto _M_trace(const std::string& _s) -> std::vector<node_type*>;
     void _M_assign(const trie_tree& _t);
     void _M_clone_sub_tree(node_type* const _p, const node_type* const _t);
 private:
@@ -84,6 +106,7 @@ private:
     size_t _word_cnt = 0;
     size_t _max_depth = 0;
 };
-};
+
+}
 
 #endif // _ICY_TRIE_TREE_HPP_

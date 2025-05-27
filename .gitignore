@@ -9,13 +9,18 @@
 !/src/*
 !/include
 !/include/*
-!/include/details/*
+
+!/cmake
+!/cmake/*
 
 !/doc
 !/doc/*
 
 !/example
 !/example/*
+
+!/test
+!/test/*
 
 !/.github
 !/.github/workflows
