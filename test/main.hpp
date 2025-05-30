@@ -57,7 +57,7 @@ void icy_abort(const char* _abortion, const char* _file, unsigned _line) {
     __EXPECT(expression, icy_abort(ICY_STR(expression), __FILE__, __LINE__))
 #define EXPECT_TRUE(expression) EXPECT(expression)
 #define EXPECT_FALSE(expression) \
-    __EXPECT(!expression, icy_abort(ICY_STRCAT(!, expression), __FILE__, __LINE__))
+    __EXPECT(!expression, icy_abort(ICY_STR(!expression), __FILE__, __LINE__))
 #define EXPECT_EQ(x, y) \
     __EXPECT(((x) == (y)), icy_abort(ICY_STR(x == y), __FILE__, __LINE__))
 #define EXPECT_NQ(x, y) \
